@@ -1,0 +1,19 @@
+# Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Spring Boot
+backend/target/
+
+# Environment / secrets
+backend/src/main/resources/application-dev.properties
+.env
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store

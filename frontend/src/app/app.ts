@@ -1,28 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { ApiService } from './services/api.service';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
-
-  backendMessage = signal('Connecting to backend...');
-
-  constructor(private apiService: ApiService) {}
-
-  ngOnInit(): void {
-    this.apiService.healthCheck().subscribe({
-      next: (response) => {
-        console.log('Backend response:', response);
-        this.backendMessage.set(response);
-      },
-
-      error: (error) => {
-        console.error('Backend error:', error);
-        this.backendMessage.set('Backend connection failed!');
-      }
-    });
-  }
+export class App {
 }
+

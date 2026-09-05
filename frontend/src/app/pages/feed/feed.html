@@ -1,0 +1,7 @@
+<h1>AI News</h1>
+
+<div class="feed">
+  @for (article of articles(); track article.id) {
+    <app-news-card [article]="article"></app-news-card>
+  }
+</div>

@@ -1,23 +1,70 @@
 <article class="news-card">
 
-  <span>{{ article().category }}</span>
+  <div class="card-top">
 
-  <h2>
-    {{ article().title }}
-  </h2>
+    <span class="category">
+      {{ article().category }}
+    </span>
 
-  <p>
-    {{ article().summary }}
-  </p>
+    <span class="read-time">
+      {{ article().readTime }}
+    </span>
 
-  <small>
-    {{ article().source }}
-  </small>
+  </div>
 
-  <br>
+  <a
+    class="article-link"
+    [routerLink]="['/article', article().id]"
+  >
 
-  <a [routerLink]="['/article', article().id]">
-    Read article →
+    <h2>
+      {{ article().title }}
+    </h2>
+
+    <p class="summary">
+      {{ article().summary }}
+    </p>
+
   </a>
+
+  <div class="card-footer">
+
+    <div class="source">
+      {{ article().source }}
+    </div>
+
+    <div class="actions">
+
+      <button
+        type="button"
+        class="action-button like-button"
+        [class.active]="liked()"
+        [disabled]="likeLoading()"
+        (click)="toggleLike($event)"
+      >
+        @if (liked()) {
+          ♥ Liked
+        } @else {
+          ♡ Like
+        }
+      </button>
+
+      <button
+        type="button"
+        class="action-button save-button"
+        [class.active]="saved()"
+        [disabled]="saveLoading()"
+        (click)="toggleSave($event)"
+      >
+        @if (saved()) {
+          ★ Saved
+        } @else {
+          ☆ Save
+        }
+      </button>
+
+    </div>
+
+  </div>
 
 </article>

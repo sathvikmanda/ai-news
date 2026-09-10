@@ -1,29 +1,31 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NewsCard } from '../../shared/news-card/news-card';
+import { NewsService } from '../../core/services/news.service';
 
 @Component({
   selector: 'app-feed',
-  imports: [NewsCard],
+  imports: [
+    NewsCard,
+    RouterLink
+  ],
   templateUrl: './feed.html',
   styleUrl: './feed.css'
 })
 export class Feed {
 
-  articles = signal([
-    {
-      id: 1,
-      title: 'OpenAI announces new AI model',
-      summary: 'A new generation of AI models is changing the industry.',
-      source: 'Tech News',
-      category: 'AI'
-    },
-    {
-      id: 2,
-      title: 'Google advances Gemini',
-      summary: 'Google announces new capabilities for its AI platform.',
-      source: 'AI Weekly',
-      category: 'AI'
-    }
-  ]);
+  private newsService = inject(NewsService);
 
+  articles = signal<any[]>([]);
+
+  ngOnInit() {
+    this.newsService.getArticles().subscribe({
+      next: (articles) => {
+        this.articles.set(articles as any[]);
+      },
+      error: (error) => {
+        console.error('Failed to load articles:', error);
+      }
+    });
+  }
 }

@@ -1,7 +1,51 @@
-<h1>AI News</h1>
+<div class="feed-page">
 
-<div class="feed">
-  @for (article of articles(); track article.id) {
-    <app-news-card [article]="article"></app-news-card>
-  }
+  <!-- Header -->
+  <header class="topbar">
+
+    <div class="logo">
+      AI DAILY
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-button" aria-label="Search">
+        🔍
+      </button>
+
+      <a routerLink="/profile" class="profile-button">
+        👤
+      </a>
+    </div>
+
+  </header>
+
+
+  <!-- Main content -->
+  <main class="feed-container">
+
+    <div class="feed-heading">
+      <p class="eyebrow">YOUR DAILY AI BRIEF</p>
+      <h1>For You</h1>
+      <p class="subtitle">
+        The latest developments in artificial intelligence,
+        summarized for you.
+      </p>
+    </div>
+
+
+    <!-- Articles -->
+    <section class="articles">
+
+      @for (article of articles(); track article.id) {
+
+        <app-news-card
+          [article]="article">
+        </app-news-card>
+
+      }
+
+    </section>
+
+  </main>
+
 </div>

@@ -1,5 +1,146 @@
-<h1>Article</h1>
+@if (loading()) {
 
-<p>
-  Article ID: {{ articleId }}
-</p>
+  <main class="article-container">
+    <div class="loading">
+      Loading article...
+    </div>
+  </main>
+
+} @else if (error()) {
+
+  <main class="article-container">
+    <div class="error-message">
+      <h2>Unable to load article</h2>
+      <p>Something went wrong while loading this article.</p>
+    </div>
+  </main>
+
+} @else if (article(); as article) {
+
+  <main class="article-container">
+
+    <article class="article-page">
+
+      @if (article.category) {
+        <div class="category">
+          {{ article.category }}
+        </div>
+      }
+
+      <h1 class="article-title">
+        {{ article.title }}
+      </h1>
+
+      <div class="article-meta">
+
+        @if (article.source) {
+          <span>{{ article.source }}</span>
+        }
+
+        @if (article.publishedAt) {
+          <span class="separator">•</span>
+
+          <span>
+            {{ article.publishedAt | date:'medium' }}
+          </span>
+        }
+
+        @if (article.readTime) {
+          <span class="separator">•</span>
+
+          <span>
+            {{ article.readTime }}
+          </span>
+        }
+
+      </div>
+
+      @if (article.description) {
+
+        <p class="description">
+          {{ article.description }}
+        </p>
+
+      }
+
+      <div class="divider"></div>
+
+      @if (article.summary) {
+
+        <section class="ai-section ai-summary">
+
+          <div class="section-label">
+            AI SUMMARY
+          </div>
+
+          <h2>
+            What happened?
+          </h2>
+
+          <p>
+            {{ article.summary }}
+          </p>
+
+        </section>
+
+      }
+
+      @if (article.whyItMatters) {
+
+        <section class="ai-section">
+
+          <div class="section-label">
+            AI ANALYSIS
+          </div>
+
+          <h2>
+            Why it matters
+          </h2>
+
+          <p>
+            {{ article.whyItMatters }}
+          </p>
+
+        </section>
+
+      }
+
+      @if (article.keyPoints) {
+
+        <section class="ai-section">
+
+          <div class="section-label">
+            KEY TAKEAWAYS
+          </div>
+
+          <h2>
+            Key points
+          </h2>
+
+          <div class="key-points">
+            {{ article.keyPoints }}
+          </div>
+
+        </section>
+
+      }
+
+      <div class="article-footer">
+
+        <a
+          class="original-link"
+          [href]="article.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read original article
+          <span>↗</span>
+        </a>
+
+      </div>
+
+    </article>
+
+  </main>
+
+}

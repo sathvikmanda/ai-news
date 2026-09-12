@@ -8,13 +8,19 @@
     </div>
 
     <div class="topbar-actions">
-      <button class="icon-button" aria-label="Search">
+
+      <button
+        class="icon-button"
+        aria-label="Search">
         🔍
       </button>
 
-      <a routerLink="/profile" class="profile-button">
+      <a
+        routerLink="/profile"
+        class="profile-button">
         👤
       </a>
+
     </div>
 
   </header>
@@ -23,24 +29,65 @@
   <!-- Main content -->
   <main class="feed-container">
 
+    <!-- Heading -->
     <div class="feed-heading">
-      <p class="eyebrow">YOUR DAILY AI BRIEF</p>
-      <h1>For You</h1>
+
+      <p class="eyebrow">
+        YOUR DAILY AI BRIEF
+      </p>
+
+      <h1>
+        For You
+      </h1>
+
       <p class="subtitle">
         The latest developments in artificial intelligence,
         summarized for you.
       </p>
+
     </div>
 
 
     <!-- Articles -->
     <section class="articles">
 
-      @for (article of articles(); track article.id) {
+      <!-- Loading state -->
+      @if (loading()) {
 
-        <app-news-card
-          [article]="article">
-        </app-news-card>
+        <div class="state-message">
+          Loading your feed...
+        </div>
+
+      }
+
+      <!-- Error state -->
+      @else if (error()) {
+
+        <div class="state-message error">
+          Failed to load your feed. Please try again.
+        </div>
+
+      }
+
+      <!-- Empty state -->
+      @else if (articles().length === 0) {
+
+        <div class="state-message">
+          No articles available right now.
+        </div>
+
+      }
+
+      <!-- Article list -->
+      @else {
+
+        @for (article of articles(); track article.id) {
+
+          <app-news-card
+            [article]="article">
+          </app-news-card>
+
+        }
 
       }
 

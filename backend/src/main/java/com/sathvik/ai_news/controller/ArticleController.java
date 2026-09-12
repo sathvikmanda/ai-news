@@ -2,12 +2,9 @@ package com.sathvik.ai_news.controller;
 
 import com.sathvik.ai_news.dto.AiArticleResponse;
 import com.sathvik.ai_news.dto.ArticleResponse;
-import com.sathvik.ai_news.entity.Article;
-import com.sathvik.ai_news.repository.ArticleRepository;
 import com.sathvik.ai_news.service.AiProcessingService;
 import com.sathvik.ai_news.service.ArticleService;
 import com.sathvik.ai_news.service.NewsIngestionService;
-import com.sathvik.ai_news.service.TopicService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,21 +17,15 @@ public class ArticleController {
     private final ArticleService articleService;
     private final NewsIngestionService newsIngestionService;
     private final AiProcessingService aiProcessingService;
-    private final ArticleRepository articleRepository;
-    private final TopicService topicService;
 
     public ArticleController(
             ArticleService articleService,
             NewsIngestionService newsIngestionService,
-            AiProcessingService aiProcessingService,
-            ArticleRepository articleRepository,
-            TopicService topicService
+            AiProcessingService aiProcessingService
     ) {
         this.articleService = articleService;
         this.newsIngestionService = newsIngestionService;
         this.aiProcessingService = aiProcessingService;
-        this.articleRepository = articleRepository;
-        this.topicService = topicService;
     }
 
     @GetMapping
@@ -67,24 +58,6 @@ public class ArticleController {
         newsIngestionService.fetchAllFeeds();
 
         return "News ingestion completed";
-    }
-
-    @PostMapping("/backfill-topics")
-    public String backfillTopics() {
-
-        List<Article> articles =
-                articleRepository.findAll();
-
-        for (Article article : articles) {
-
-            topicService.assignTopics(article);
-
-            articleRepository.save(article);
-        }
-
-        return "Topic backfill completed for "
-                + articles.size()
-                + " articles";
     }
 
     @PostMapping("/{id}/ai-process")

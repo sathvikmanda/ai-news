@@ -27,10 +27,7 @@ export class NewsCard {
   likeLoading = signal(false);
   saveLoading = signal(false);
 
-  constructor() {
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
 
     const article = this.article();
 
@@ -38,13 +35,9 @@ export class NewsCard {
       return;
     }
 
-    this.liked.set(
-      article.liked === true
-    );
+    this.liked.set(article.liked === true);
+    this.saved.set(article.saved === true);
 
-    this.saved.set(
-      article.saved === true
-    );
   }
 
   toggleLike(event: MouseEvent): void {
@@ -75,6 +68,7 @@ export class NewsCard {
             ? 'Article unliked successfully'
             : 'Article liked successfully'
         );
+
       },
 
       error: (error) => {
@@ -86,15 +80,19 @@ export class NewsCard {
           error
         );
 
+        // Roll back optimistic update
         this.liked.set(wasLiked);
+
       },
 
       complete: () => {
 
         this.likeLoading.set(false);
+
       }
 
     });
+
   }
 
   toggleSave(event: MouseEvent): void {
@@ -125,6 +123,7 @@ export class NewsCard {
             ? 'Article unsaved successfully'
             : 'Article saved successfully'
         );
+
       },
 
       error: (error) => {
@@ -136,14 +135,19 @@ export class NewsCard {
           error
         );
 
+        // Roll back optimistic update
         this.saved.set(wasSaved);
+
       },
 
       complete: () => {
 
         this.saveLoading.set(false);
+
       }
 
     });
+
   }
+
 }

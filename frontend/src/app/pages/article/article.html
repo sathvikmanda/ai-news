@@ -1,59 +1,134 @@
 @if (loading()) {
 
   <main class="article-container">
+
     <div class="loading">
       Loading article...
     </div>
+
   </main>
 
-} @else if (error()) {
+}
+
+@else if (error()) {
 
   <main class="article-container">
+
     <div class="error-message">
-      <h2>Unable to load article</h2>
-      <p>Something went wrong while loading this article.</p>
+
+      <h2>
+        Unable to load article
+      </h2>
+
+      <p>
+        Something went wrong while loading this article.
+      </p>
+
+      <a
+        routerLink="/feed"
+        class="back-button"
+      >
+        ← Back to feed
+      </a>
+
     </div>
+
   </main>
 
-} @else if (article(); as article) {
+}
+
+@else if (article(); as article) {
 
   <main class="article-container">
+
+    <!-- ---------- BACK ---------- -->
+
+    <a
+      routerLink="/feed"
+      class="back-link"
+    >
+      ← Back to feed
+    </a>
+
 
     <article class="article-page">
 
+
+      <!-- ---------- HEADER ---------- -->
+
       @if (article.category) {
+
         <div class="category">
           {{ article.category }}
         </div>
+
       }
+
 
       <h1 class="article-title">
         {{ article.title }}
       </h1>
 
+
+      <!-- ---------- META ---------- -->
+
       <div class="article-meta">
 
         @if (article.source) {
-          <span>{{ article.source }}</span>
+
+          <span>
+            {{ article.source }}
+          </span>
+
         }
 
         @if (article.publishedAt) {
-          <span class="separator">•</span>
+
+          <span class="separator">
+            •
+          </span>
 
           <span>
-            {{ article.publishedAt | date:'medium' }}
+            {{ article.publishedAt | date:'mediumDate' }}
           </span>
+
         }
 
         @if (article.readTime) {
-          <span class="separator">•</span>
+
+          <span class="separator">
+            •
+          </span>
 
           <span>
             {{ article.readTime }}
           </span>
+
         }
 
       </div>
+
+
+      <!-- ---------- TOPICS ---------- -->
+
+      @if (article.topics.length) {
+
+        <div class="topics">
+
+          @for (topic of article.topics; track topic) {
+
+            <span class="topic">
+              {{ topic }}
+            </span>
+
+          }
+
+        </div>
+
+      }
+
+
+      <!-- ---------- DESCRIPTION ---------- -->
 
       @if (article.description) {
 
@@ -63,7 +138,59 @@
 
       }
 
+
+      <!-- ---------- ACTIONS ---------- -->
+
+      <div class="article-actions">
+
+        <button
+          type="button"
+          class="action-button"
+          [class.active]="liked()"
+          [disabled]="likeLoading()"
+          (click)="toggleLike($event)"
+        >
+
+          @if (liked()) {
+
+            ♥ Liked
+
+          } @else {
+
+            ♡ Like
+
+          }
+
+        </button>
+
+
+        <button
+          type="button"
+          class="action-button"
+          [class.active]="saved()"
+          [disabled]="saveLoading()"
+          (click)="toggleSave($event)"
+        >
+
+          @if (saved()) {
+
+            ★ Saved
+
+          } @else {
+
+            ☆ Save
+
+          }
+
+        </button>
+
+      </div>
+
+
       <div class="divider"></div>
+
+
+      <!-- ---------- AI SUMMARY ---------- -->
 
       @if (article.summary) {
 
@@ -85,6 +212,9 @@
 
       }
 
+
+      <!-- ---------- WHY IT MATTERS ---------- -->
+
       @if (article.whyItMatters) {
 
         <section class="ai-section">
@@ -104,6 +234,9 @@
         </section>
 
       }
+
+
+      <!-- ---------- KEY POINTS ---------- -->
 
       @if (article.keyPoints) {
 
@@ -125,17 +258,29 @@
 
       }
 
+
+      <!-- ---------- ORIGINAL ARTICLE ---------- -->
+
       <div class="article-footer">
 
-        <a
-          class="original-link"
-          [href]="article.url"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Read original article
-          <span>↗</span>
-        </a>
+        @if (article.url) {
+
+          <a
+            class="original-link"
+            [href]="article.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+
+            Read original article
+
+            <span>
+              ↗
+            </span>
+
+          </a>
+
+        }
 
       </div>
 

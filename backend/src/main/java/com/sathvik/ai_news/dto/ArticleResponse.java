@@ -1,8 +1,10 @@
 package com.sathvik.ai_news.dto;
 
 import com.sathvik.ai_news.entity.Article;
+import com.sathvik.ai_news.entity.Topic;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record ArticleResponse(
         Long id,
@@ -20,7 +22,8 @@ public record ArticleResponse(
         String readTime,
         boolean aiProcessed,
         boolean liked,
-        boolean saved
+        boolean saved,
+        List<String> topics
 ) {
 
     public static ArticleResponse fromEntity(
@@ -28,6 +31,12 @@ public record ArticleResponse(
             boolean liked,
             boolean saved
     ) {
+
+        List<String> topics =
+                article.getTopics()
+                        .stream()
+                        .map(Topic::getName)
+                        .toList();
 
         return new ArticleResponse(
                 article.getId(),
@@ -45,7 +54,8 @@ public record ArticleResponse(
                 article.getReadTime(),
                 article.isAiProcessed(),
                 liked,
-                saved
+                saved,
+                topics
         );
     }
 }

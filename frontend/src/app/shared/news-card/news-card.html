@@ -1,16 +1,6 @@
 <article class="news-card">
 
-  <div class="card-top">
-
-    <span class="category">
-      {{ article().category }}
-    </span>
-
-    <span class="read-time">
-      {{ article().readTime }}
-    </span>
-
-  </div>
+  <!-- ---------- ARTICLE ---------- -->
 
   <a
     class="article-link"
@@ -22,18 +12,59 @@
     </h2>
 
     <p class="summary">
-      {{ article().summary }}
+      {{ article().summary || article().description }}
     </p>
 
   </a>
 
-  <div class="card-footer">
 
-    <div class="source">
-      {{ article().source }}
+  <!-- ---------- TOPICS ---------- -->
+
+  @if (article().topics?.length) {
+
+    <div class="topics">
+
+      @for (topic of article().topics; track topic) {
+
+        <span class="topic">
+          {{ topic }}
+        </span>
+
+      }
+
     </div>
 
+  }
+
+
+  <!-- ---------- FOOTER ---------- -->
+
+  <div class="card-footer">
+
+    <div class="article-meta">
+
+      <span class="source">
+        {{ article().source }}
+      </span>
+
+      @if (article().readTime) {
+
+        <span class="meta-divider">
+          ·
+        </span>
+
+        <span class="read-time">
+          {{ article().readTime }}
+        </span>
+
+      }
+
+    </div>
+
+
     <div class="actions">
+
+      <!-- LIKE -->
 
       <button
         type="button"
@@ -42,12 +73,21 @@
         [disabled]="likeLoading()"
         (click)="toggleLike($event)"
       >
+
         @if (liked()) {
+
           ♥ Liked
+
         } @else {
+
           ♡ Like
+
         }
+
       </button>
+
+
+      <!-- SAVE -->
 
       <button
         type="button"
@@ -56,11 +96,17 @@
         [disabled]="saveLoading()"
         (click)="toggleSave($event)"
       >
+
         @if (saved()) {
+
           ★ Saved
+
         } @else {
+
           ☆ Save
+
         }
+
       </button>
 
     </div>

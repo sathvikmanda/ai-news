@@ -1,5 +1,26 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Article {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  summary: string | null;
+  whyItMatters: string | null;
+  keyPoints: string | null;
+  category: string;
+  source: string;
+  url: string;
+  imageUrl: string | null;
+  publishedAt: string;
+  readTime: string;
+  aiProcessed: boolean;
+  liked: boolean;
+  saved: boolean;
+  topics: string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +31,29 @@ export class NewsService {
 
   private apiUrl = 'http://localhost:8080/api/articles';
 
-  getArticles() {
-    return this.http.get(this.apiUrl);
+
+  // ---------- ARTICLES ----------
+
+  getArticles(): Observable<Article[]> {
+
+    return this.http.get<Article[]>(this.apiUrl);
+
   }
 
-  getArticle(id: number) {
-    return this.http.get(`${this.apiUrl}/${id}`);
+
+  getArticle(id: number): Observable<Article> {
+
+    return this.http.get<Article>(
+      `${this.apiUrl}/${id}`
+    );
+
   }
+
+
+  // ---------- LIKE ----------
 
   likeArticle(id: number) {
+
     return this.http.post(
       `${this.apiUrl}/${id}/like`,
       {},
@@ -26,18 +61,26 @@ export class NewsService {
         responseType: 'text'
       }
     );
+
   }
+
 
   unlikeArticle(id: number) {
+
     return this.http.delete(
       `${this.apiUrl}/${id}/like`,
       {
         responseType: 'text'
       }
     );
+
   }
 
+
+  // ---------- SAVE ----------
+
   saveArticle(id: number) {
+
     return this.http.post(
       `${this.apiUrl}/${id}/save`,
       {},
@@ -45,14 +88,19 @@ export class NewsService {
         responseType: 'text'
       }
     );
+
   }
 
+
   unsaveArticle(id: number) {
+
     return this.http.delete(
       `${this.apiUrl}/${id}/save`,
       {
         responseType: 'text'
       }
     );
+
   }
+
 }
